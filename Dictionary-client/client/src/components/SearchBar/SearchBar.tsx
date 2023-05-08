@@ -30,8 +30,8 @@ export const SearchBar = () => {
   }
 
   return (
-    <Box sx={{display:'flex',justifyContent:'center'}}>
-      <Paper sx={{display:'flex',width:'90%'}}>
+    <Box sx={{display:'flex',justifyContent:'center',width:'100%'}}>
+      <Paper sx={{display:'flex',width:'100%'}}>
         <TextField
         sx={{'& fieldset': {border:'none'}, width:'100%'}}
         onChange={handleChange} 
