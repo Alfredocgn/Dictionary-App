@@ -30,7 +30,7 @@ export const SearchBar = () => {
   }
 
   return (
-    <Box sx={{display:'flex',justifyContent:'center',width:'100%'}}>
+    <Box sx={{display:'flex',justifyContent:'center',width:'100%',marginTop:'1rem'}}>
       <Paper sx={{display:'flex',width:'100%'}}>
         <TextField
         sx={{'& fieldset': {border:'none'}, width:'100%'}}
