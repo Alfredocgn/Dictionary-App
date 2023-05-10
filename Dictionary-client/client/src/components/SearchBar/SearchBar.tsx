@@ -3,14 +3,13 @@ import {useState} from 'react'
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 
-export const SearchBar = () => {
+export const SearchBar = ({onSearch}) => {
   const [word,setWord] = useState('')
   const [definitions,setDefinitions]=useState<{word: string,def:string}[]>([])
+  const[searchWord,setSearchWord] =useState('')
   const showClearButton = word.length>0
   const handleChange = (e : React.ChangeEvent<HTMLInputElement>) =>{
     setWord(e.target.value)
-    // console.log(word)
-    console.log(e.target.value)
   }
   const handleClearClick = ()=>{
     setWord('')
@@ -21,8 +20,8 @@ export const SearchBar = () => {
     fetch(`http://localhost:3001?word=${word}`)
     .then(response => response.json())
     .then(data => {
-      console.log(data)
       setDefinitions(data)
+      setSearchWord(word)
     })
     .catch(error => {
       console.log(error)
@@ -45,16 +44,6 @@ export const SearchBar = () => {
             <SearchIcon/>
           </IconButton>
       </Paper>
-      {definitions &&
-      <Box>
-        {definitions.map((definition)=>(
-        <Paper key={definition.word}>
-          <Typography>{definition.word}</Typography>
-          <Typography>{definition.def}</Typography>
-
-        </Paper>))}
-      </Box>
-      }
     </Box>
 
 

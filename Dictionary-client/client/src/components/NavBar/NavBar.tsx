@@ -16,7 +16,7 @@ export default function NavBar({passTheme,mode}:{passTheme:(mode:boolean)=>void,
   
   return (
     <Box sx={{ flexGrow: 1 ,width:'100%',margin:'1rem'}}>
-      <AppBar position="static" sx={{width:'100%'}}>
+      <AppBar position="static" sx={{width:'100%',backgroundColor:'secondary.main'}}>
         <Toolbar sx={{display:'flex',justifyContent:'space-between'}}>
           <IconButton
             size="large"
@@ -28,10 +28,11 @@ export default function NavBar({passTheme,mode}:{passTheme:(mode:boolean)=>void,
           </IconButton>
           <Grid>
           <Switch
-              aria-label="login switch"
+              aria-label="mode switch"
               checked={mode}
               onChange={toggleTheme}
               onClick={()=> passTheme(!mode)}
+              color='default'
             />
 
           </Grid>

@@ -1,37 +1,48 @@
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
+import {Box,Container,List,ListItem,ListItemText} from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 
 
 
-
-const card = (
-
-    <CardContent sx={{padding:'2rem',display:'flex',flexDirection:'column',alignItems:'center'}}>
-      <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-        Word of the Day
-      </Typography>
-      <Typography variant="h5" component="div">
-        benevolent
-      </Typography>
-      <Typography sx={{ mb: 1.5 }} color="text.secondary">
-        adjective
-      </Typography>
-      <Typography variant="body2">
-        well meaning and kindly.
-        <br />
-        {'"a benevolent smile"'}
-      </Typography>
-    </CardContent>
-);
-
-export default function SearchCard() {
+export default function SearchCard({searchWord,definitions}) {
   return (
-    <Box sx={{ display:'flex',flexDirection:'column', alignItems:'center',maxWidth:'100%',width:'100%'}}>
 
-        <Card sx={{display:'flex',justifyContent:'center',margin:'1rem'}}>{card}</Card>
-          
+
+<Box sx={{ display:'flex',flexDirection:'column', alignItems:'center',width:'100%'}}>
+            <CardContent sx={{display:'flex',flexDirection:'column',alignItems:'center',width:'100%'}}>
+                <Container sx={{display:'flex',flexDirection:'column',alignItems:'flex-start',width:'100%',borderBottom:'0.05rem solid'}}>
+                <Typography variant="h5" sx={{marginBottom:'0.25rem',fontWeight:'bold'}}>
+                   {searchWord}
+                </Typography>
+                <Typography sx={{ color:'secondary.main' }}>
+                    phonetics
+                </Typography>
+                </Container>
+                <Container>
+                <List>  
+                    <Typography sx={{fontWeight:'bold'}}>
+                   Meaning
+                    </Typography>  
+                    {definitions.localeCompare((definition,index)=>(
+                      <ListItem key={index} sx={{ "&::before": { content: "'\\2022'", marginRight: "8px", fontSize: "2rem", color: "secondary.main" } }}>
+                        <ListItemText primary={definition.def}/>
+                      </ListItem>
+
+                    ))
+
+                    }  
+  
+                </List>                 
+                    <Typography sx={{fontWeight:'bold',borderTop:'0.05rem solid'}}>
+                         Synonysm
+                    </Typography>
+                    <Typography sx={{color:'secondary.main'}}>
+                        kind, compassionate
+                    </Typography>
+                </Container>
+            </CardContent>          
     </Box>
+          
+
   );
 }
