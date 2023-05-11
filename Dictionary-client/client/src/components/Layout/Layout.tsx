@@ -7,15 +7,15 @@ import DayWordCard from "../DayWordCard/DayWordCard"
 
 
 const Layout = ({toggleTheme, isDarkMode} : {toggleTheme: () => void, isDarkMode : boolean}) => {
- const [searchWord,setSearchWord]=useState('')
- const [definitions,setDefinitions] = useState([])
+const [searchWord,setSearchWord]=useState('')
+const [definitions,setDefinitions] = useState([])
 
- const handleSearch=(searchResult:any) =>{
-  setSearchWord(searchResult.word)
-  setDefinitions(searchResult.definitions)
- }
+const handleSearch=(searchResult) =>{
+setSearchWord(searchResult.word)
+setDefinitions(searchResult.definitions)
+}
 
-  return (
+return (
     <Box>
         <NavBar passTheme={toggleTheme} mode={isDarkMode} />
         <Box sx={{display:'flex'}}>
@@ -30,7 +30,7 @@ const Layout = ({toggleTheme, isDarkMode} : {toggleTheme: () => void, isDarkMode
 
 
     </Box>
-  )
+)
 }
 
 export default Layout

@@ -10,7 +10,6 @@ import { useState } from "react"
 
 function App() {
   const [isDarkMode,setIsDarkMode] = useState(false)
-
   const toggleTheme = () =>{
     setIsDarkMode(!isDarkMode)
   }
@@ -34,6 +33,8 @@ function App() {
       },
     },
   });
+
+  
 
 
   
