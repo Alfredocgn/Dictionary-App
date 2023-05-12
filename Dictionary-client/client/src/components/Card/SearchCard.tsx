@@ -1,4 +1,4 @@
-import {Box,Container,List,ListItem,ListItemText} from '@mui/material';
+import {Box,Button,Container,List,ListItem,ListItemText} from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 
@@ -11,7 +11,7 @@ type SearchCardProps = {
   definitions: Definition []
 }
 
-export default function SearchCard({searchWord,definitions}:SearchCardProps) {
+export default function SearchCard({searchWord,definitions,handleResetSearch}:SearchCardProps) {
   return (
 
 
@@ -47,7 +47,12 @@ export default function SearchCard({searchWord,definitions}:SearchCardProps) {
                         kind, compassionate
                     </Typography>
                 </Container>
-            </CardContent>          
+            </CardContent> 
+            <Button onClick={handleResetSearch} variant='contained' color='secondary'>
+              <Typography sx={{fontWeight:'bold'}}>
+              Find a new Word!
+              </Typography>
+              </Button>         
     </Box>
           
 
