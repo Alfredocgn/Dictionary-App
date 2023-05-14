@@ -3,13 +3,16 @@ import {useState} from 'react'
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 
-type Definition = {word:string;def:string}[]
+type Definition = {word:string;def:string; phonetic:string}[]
 type Props = {
-  onSearch: (data:{word:string,definitions:Definition}) => void
+  onSearch: (data:{word:string,definitions:Definition}) => void;
+  word:string;
+  setWord: React.Dispatch<React.SetStateAction<string>>
+  
 }
 
-export const SearchBar = ({onSearch}:Props) => {
-  const [word,setWord] = useState<string>('')
+export const SearchBar = ({onSearch,word,setWord}:Props) => {
+  // const [word,setWord] = useState<string>('')
   const [definitions,setDefinitions]=useState<Definition>([])
   const showClearButton = word.length>0
   console.log(definitions)
@@ -25,9 +28,11 @@ export const SearchBar = ({onSearch}:Props) => {
     fetch(`http://localhost:3001?word=${word}`)
     .then(response => response.json())
     .then(data => {
-      console.log(data)
+
+      console.log(data.definition)
       onSearch({word:word,definitions:data})
-      // console.log(onSearch)
+      setWord('')
+      console.log(onSearch)
     })
     .catch(error => {
       console.log(error)

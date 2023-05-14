@@ -14,14 +14,16 @@ interface  SearchResult {
 const Layout = ({toggleTheme, isDarkMode} : {toggleTheme: () => void, isDarkMode : boolean}) => {
 const [searchWord,setSearchWord]=useState('')
 const [definitions,setDefinitions] = useState<{def:string}[]>([])
+const [word,setWord] = useState<string>('')
 
 const handleSearch=(searchResult : SearchResult) =>{
 setSearchWord(searchResult.word)
 setDefinitions(searchResult.definitions)
 }
-const handleResetSearch = () => {
+const handleResetSearch  = () => {
     setSearchWord('')
     setDefinitions([])
+    setWord('')
 }
 
 return (
@@ -32,8 +34,8 @@ return (
                 <DayWordCard/>
             </Container>
             <Container sx={{flexGrow:1,margin:'1rem',height:'100vh',border:`0.15rem solid ${isDarkMode ? '#f50057' : '#f50057'}`,borderRadius:'2rem'}}>
-                <SearchBar onSearch={handleSearch}/>
-                <SearchCard searchWord={searchWord} definitions={definitions} handleResetSearch={handleResetSearch}/>
+                <SearchBar word={word} setWord={setWord} onSearch={handleSearch}/>
+                <SearchCard word={word} searchWord={searchWord} definitions={definitions} handleResetSearch={handleResetSearch}/>
             </Container>
         </Box>
 

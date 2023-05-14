@@ -4,11 +4,13 @@ import Typography from '@mui/material/Typography';
 
 type Definition = {
   def:string
+  phonetic:string
 }
 
 type SearchCardProps = {
   searchWord:string
   definitions: Definition []
+  handleResetSearch: () => void 
 }
 
 export default function SearchCard({searchWord,definitions,handleResetSearch}:SearchCardProps) {
@@ -21,9 +23,13 @@ export default function SearchCard({searchWord,definitions,handleResetSearch}:Se
                 <Typography variant="h5" sx={{marginBottom:'0.25rem',fontWeight:'bold'}}>
                   {searchWord}
                 </Typography>
-                <Typography sx={{ color:'secondary.main' }}>
-                    phonetics
+                {definitions.map((definitions,index)=>(
+                <Typography key={index} sx={{ color:'secondary.main' }}>
+                  {definitions.phonetic}
+                    
                 </Typography>
+
+                ))}
                 </Container>
                 <Container>
                 <List>  
@@ -48,11 +54,14 @@ export default function SearchCard({searchWord,definitions,handleResetSearch}:Se
                     </Typography>
                 </Container>
             </CardContent> 
+            {searchWord && 
             <Button onClick={handleResetSearch} variant='contained' color='secondary'>
               <Typography sx={{fontWeight:'bold'}}>
               Find a new Word!
               </Typography>
-              </Button>         
+              </Button>       
+            
+            }
     </Box>
           
 
