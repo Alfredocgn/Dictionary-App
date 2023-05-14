@@ -2,17 +2,17 @@ import { Paper,TextField,IconButton,Box } from '@mui/material'
 import {useState} from 'react'
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
+import { SearchResult } from '../Layout/Layout';
 
-type Definition = {word:string;def:string; phonetic:string}[]
+type Definition = string[]
 type Props = {
-  onSearch: (data:{word:string,definitions:Definition}) => void;
+  onSearch: (data:SearchResult) => void;
   word:string;
   setWord: React.Dispatch<React.SetStateAction<string>>
   
 }
 
 export const SearchBar = ({onSearch,word,setWord}:Props) => {
-  // const [word,setWord] = useState<string>('')
   const [definitions,setDefinitions]=useState<Definition>([])
   const showClearButton = word.length>0
   console.log(definitions)
@@ -28,15 +28,23 @@ export const SearchBar = ({onSearch,word,setWord}:Props) => {
     fetch(`http://localhost:3001?word=${word}`)
     .then(response => response.json())
     .then(data => {
+      if(data.error) {
+        alert(data.error)
+              } else {
+                onSearch(data)
+              }
 
-      console.log(data.definition)
-      onSearch({word:word,definitions:data})
+      // console.log(data)
       setWord('')
-      console.log(onSearch)
     })
     .catch(error => {
       console.log(error)
     })
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter')
+    handleSearch()
   }
 
   return (
@@ -47,6 +55,7 @@ export const SearchBar = ({onSearch,word,setWord}:Props) => {
         onChange={handleChange} 
         placeholder='Insert your word'
         value ={word}
+        onKeyDown={handleKeyDown}
         />{showClearButton && 
           <IconButton onClick={handleClearClick} type='button' aria-label='search'>
             <ClearIcon/>

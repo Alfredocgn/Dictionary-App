@@ -1,44 +1,57 @@
 import {Box,Button,Container,List,ListItem,ListItemText} from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
+import {SearchResult} from '../Layout/Layout' 
 
 type Definition = {
-  def:string
-  phonetic:string
+  word: string,
+  definition: string[]
+  audio:string[]
+  example:string[]
+  pronunciation:string[]
+  
 }
 
 type SearchCardProps = {
   searchWord:string
-  definitions: Definition []
+  wordInfo: Definition
   handleResetSearch: () => void 
+  word:string
+  onSearch: (data:SearchResult) => void
 }
 
-export default function SearchCard({searchWord,definitions,handleResetSearch}:SearchCardProps) {
+export default function SearchCard({searchWord,wordInfo,handleResetSearch}:SearchCardProps) {
   return (
 
 
 <Box sx={{ display:'flex',flexDirection:'column', alignItems:'center',width:'100%'}}>
-            <CardContent sx={{display:'flex',flexDirection:'column',alignItems:'center',width:'100%'}}>
+  
+            <CardContent sx={{display:'flex',flexDirection:'column',alignItems:'center',width:'100%'}}>    
+            {searchWord && (
+              
                 <Container sx={{display:'flex',flexDirection:'column',alignItems:'flex-start',width:'100%',borderBottom:'0.05rem solid'}}>
+                
                 <Typography variant="h5" sx={{marginBottom:'0.25rem',fontWeight:'bold'}}>
-                  {searchWord}
+                  {searchWord.toUpperCase()}
                 </Typography>
-                {definitions.map((definitions,index)=>(
-                <Typography key={index} sx={{ color:'secondary.main' }}>
-                  {definitions.phonetic}
-                    
+    
+                <Typography sx={{ color:'secondary.main' }}>
+                  {wordInfo.pronunciation[0]}                    
                 </Typography>
 
-                ))}
+      
                 </Container>
+            )}  
                 <Container>
                 <List>  
+                  {searchWord && (
                     <Typography sx={{fontWeight:'bold'}}>
                   Meaning
-                    </Typography>  
-                    {definitions.map((definitions,index)=>(
+                    </Typography>                    
+                  )}
+                    {wordInfo.definition.map((el,index)=>(
                       <ListItem key={index} sx={{ "&::before": { content: "'\\2022'", marginRight: "8px", fontSize: "2rem", color: "secondary.main" } }}>
-                        <ListItemText primary={definitions.def}/>
+                        <ListItemText primary={el}/>
                       </ListItem>
 
                     ))
@@ -46,22 +59,34 @@ export default function SearchCard({searchWord,definitions,handleResetSearch}:Se
                     }  
   
                 </List>                 
-                    <Typography sx={{fontWeight:'bold',borderTop:'0.05rem solid'}}>
-                        Synonysm
-                    </Typography>
-                    <Typography sx={{color:'secondary.main'}}>
-                        kind, compassionate
-                    </Typography>
+                <List>  
+                  {searchWord && (
+                  
+                    <Typography sx={{fontWeight:'bold'}}>
+                  Examples
+                    </Typography>  
+                  
+                  )}
+                    {wordInfo.example.map((el,index)=>(
+                      <ListItem key={index} sx={{ "&::before": { content: "'\\2022'", marginRight: "8px", fontSize: "2rem", color: "secondary.main" } }}>
+                        <ListItemText primary={el}/>
+                      </ListItem>
+
+                    ))
+
+                    }  
+  
+                </List>                 
                 </Container>
             </CardContent> 
-            {searchWord && 
+            {searchWord && ( 
             <Button onClick={handleResetSearch} variant='contained' color='secondary'>
               <Typography sx={{fontWeight:'bold'}}>
               Find a new Word!
               </Typography>
               </Button>       
             
-            }
+            )}
     </Box>
           
 

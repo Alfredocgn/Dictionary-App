@@ -1,7 +1,7 @@
 import { CssBaseline, createTheme } from "@mui/material"
 import Layout from "./components/Layout/Layout"
 import { ThemeProvider } from "@mui/material/styles"
-import { useState } from "react"
+import { useState,useEffect } from "react"
 
 
 
@@ -10,8 +10,15 @@ import { useState } from "react"
 
 function App() {
   const [isDarkMode,setIsDarkMode] = useState(false)
+  useEffect(()=>{
+    const storedDarkMode = localStorage.getItem('isDarkMode')
+    if(storedDarkMode){
+      setIsDarkMode(JSON.parse(storedDarkMode))
+    }
+  },[isDarkMode])
   const toggleTheme = () =>{
     setIsDarkMode(!isDarkMode)
+    localStorage.setItem('isDarkMode',JSON.stringify(!isDarkMode))
   }
 
   const theme = createTheme({
