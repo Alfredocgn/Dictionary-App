@@ -60,7 +60,7 @@ return (
     <Box>
         <NavBar passTheme={toggleTheme} mode={isDarkMode} />
         <Box sx={{display:'flex'}}>
-            <Container sx={{flexGrow:1,margin:'1rem',height:'100vh',border:`0.15rem solid ${isDarkMode ? '#f50057' : '#f50057'}`,borderRadius:'2rem'}}>
+            <Container sx={{flexGrow:1,margin:'1rem',height:'auto',border:`0.15rem solid ${isDarkMode ? '#f50057' : '#f50057'}`,borderRadius:'2rem'}}>
                 <DayWordCard/>
             </Container>
             <Container sx={{flexGrow:1,margin:'1rem',height:'auto',border:`0.15rem solid ${isDarkMode ? '#f50057' : '#f50057'}`,borderRadius:'2rem',padding:'1rem'}}>

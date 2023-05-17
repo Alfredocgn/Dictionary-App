@@ -2,6 +2,7 @@ import {Box,Container,List,ListItem,ListItemText } from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
+// import cron from 'node-cron'
 
 type Definition = {
     definition: string;
@@ -38,6 +39,9 @@ useEffect(() => {
 
         fetchWordOfTheDay()
     }
+    const intervalId = setInterval(fetchWordOfTheDay, 86400000)
+    // cron.schedule('0 9 * * *',fetchWordOfTheDay)
+    return () => clearInterval(intervalId)
 },[])
 return (
     <Box sx={{ display:'flex',flexDirection:'column', alignItems:'center',width:'100%'}}>
@@ -60,7 +64,7 @@ return (
                     {wordOfTheDay?.definitions && 
                     wordOfTheDay.definitions.map((el,index) =>(
                         <ListItem key={index} sx={{ "&::before": { content: "'\\2022'", marginRight: "8px", fontSize: "2rem", color: "secondary.main" } }}>
-                            <ListItemText primary={el.text}/>
+                            <ListItemText primary={(el.text)}/>
                         </ListItem> 
                     ) )
                     
