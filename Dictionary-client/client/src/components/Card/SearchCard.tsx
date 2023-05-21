@@ -2,6 +2,8 @@ import {Box,Button,Container,List,ListItem,ListItemText} from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import {SearchResult} from '../Layout/Layout' 
+import { useState } from 'react';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 
 type Definition = {
   word: string,
@@ -21,6 +23,23 @@ type SearchCardProps = {
 }
 
 export default function SearchCard({searchWord,wordInfo,handleResetSearch}:SearchCardProps) {
+  const [isPlayingAudio,setIsPlayingAudio] = useState(false)
+  console.log(isPlayingAudio)
+
+  const playAudio = () => {
+    if(wordInfo?.audio){
+      const audio = new Audio(wordInfo.audio[1])
+      audio.play()
+      setIsPlayingAudio(true)
+      setTimeout(()=>{
+        audio.pause()
+        setIsPlayingAudio(false)
+      },3000)
+    }
+
+  }
+
+
   return (
 
 
@@ -34,10 +53,16 @@ export default function SearchCard({searchWord,wordInfo,handleResetSearch}:Searc
                 <Typography variant="h5" sx={{marginBottom:'0.25rem',fontWeight:'bold'}}>
                   {searchWord.toUpperCase()}
                 </Typography>
-    
+
+                <Container sx={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                 <Typography sx={{ color:'secondary.main' }}>
                   {wordInfo.pronunciation[0]}                    
                 </Typography>
+                <Button>
+                  <VolumeUpIcon onClick={playAudio} />
+                </Button>
+                  
+                  </Container>    
 
       
                 </Container>

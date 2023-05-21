@@ -32,16 +32,22 @@ useEffect(() => {
             localStorage.setItem('wordOfTheDay',JSON.stringify(data))
         })
     }
+
     const cachedWordOfTheDay = localStorage.getItem('wordOfTheDay');
+
     if(cachedWordOfTheDay){
-        SetWordOfTheDay(JSON.parse(cachedWordOfTheDay))
+        const cachedData = JSON.parse(cachedWordOfTheDay)
+        const publishDate = new Date(cachedData.publishDate)
+        const currentDate = new Date()
+        if(publishDate.toDateString() !== currentDate.toDateString()){
+            fetchWordOfTheDay()
+        }else{
+            SetWordOfTheDay(cachedData)
+        }
     }else {
 
         fetchWordOfTheDay()
     }
-    const intervalId = setInterval(fetchWordOfTheDay, 86400000)
-    // cron.schedule('0 9 * * *',fetchWordOfTheDay)
-    return () => clearInterval(intervalId)
 },[])
 return (
     <Box sx={{ display:'flex',flexDirection:'column', alignItems:'center',width:'100%'}}>
@@ -57,6 +63,7 @@ return (
                 }
                 </Container>
                 <Container>
+                    {wordOfTheDay && (
                 <List>  
                     <Typography sx={{fontWeight:'bold'}}>
                     Meaning
@@ -70,6 +77,9 @@ return (
                     
                     }   
                 </List>                 
+                        
+                    )}
+                    {wordOfTheDay && (
                 <List>  
                     <Typography sx={{fontWeight:'bold'}}>
                         Examples
@@ -83,8 +93,11 @@ return (
                     
                     }   
                 </List>                 
+
+                    )}
                 </Container>
             </CardContent>          
     </Box>
 );
 }
+

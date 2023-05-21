@@ -1,4 +1,4 @@
-import { Paper,TextField,IconButton,Box } from '@mui/material'
+import { Paper,TextField,IconButton,Box, Typography } from '@mui/material'
 import {useState} from 'react'
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -14,6 +14,7 @@ type Props = {
 
 export const SearchBar = ({onSearch,word,setWord}:Props) => {
   const [definitions,setDefinitions]=useState<Definition>([])
+  const [isLoading,setIsLoading] = useState(false)
   const showClearButton = word.length>0
   console.log(definitions)
   const handleChange = (e : React.ChangeEvent<HTMLInputElement>) =>{
@@ -25,6 +26,7 @@ export const SearchBar = ({onSearch,word,setWord}:Props) => {
   }
 
   const handleSearch = () =>{
+    setIsLoading(true)
     fetch(`http://localhost:3001?word=${word}`)
     .then(response => response.json())
     .then(data => {
@@ -36,9 +38,11 @@ export const SearchBar = ({onSearch,word,setWord}:Props) => {
 
       // console.log(data)
       setWord('')
+      setIsLoading(false)
     })
     .catch(error => {
       console.log(error)
+      setIsLoading(false)
     })
   }
 
@@ -62,6 +66,7 @@ export const SearchBar = ({onSearch,word,setWord}:Props) => {
           </IconButton>}
           {word && 
           <IconButton onClick={handleSearch}>
+            {isLoading && <Typography>Loading...</Typography>}
             <SearchIcon/>
           </IconButton>
           }
