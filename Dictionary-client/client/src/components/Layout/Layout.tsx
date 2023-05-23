@@ -55,26 +55,23 @@ const handleResetSearch  = () => {
     })
     setWord('')
 }
-
 return (
     <Box>
         <NavBar passTheme={toggleTheme} mode={isDarkMode} />
-        <Box sx={{display:'flex'}}>
-            <Container sx={{flexGrow:1,margin:'1rem',height:'auto',border:`0.15rem solid ${isDarkMode ? '#f50057' : '#f50057'}`,borderRadius:'2rem'}}>
-                <DayWordCard/>
-            </Container>
-            <Container sx={{flexGrow:1,margin:'1rem',height:'auto',border:`0.15rem solid ${isDarkMode ? '#f50057' : '#f50057'}`,borderRadius:'2rem',padding:'1rem'}}>
-                <Typography variant='h3' gutterBottom sx={{display:'flex',justifyContent:'center'}}>
-                    Find your Word!
-                </Typography>
-                <SearchBar word={word} setWord={setWord} onSearch={handleSearch}/>
-                <SearchCard onSearch={handleSearch} word={word} searchWord={searchWord} wordInfo={wordInfo} handleResetSearch={handleResetSearch}/>
-            </Container>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' } }}>
+        <Container sx={{ flexGrow: 1, margin: '1rem', height: 'auto', border: `0.15rem solid ${isDarkMode ? '#f50057' : '#f50057'}`, borderRadius: '2rem' }}>
+            <DayWordCard />
+        </Container>
+        <Container sx={{ flexGrow: 1, margin: '1rem', height: 'auto', border: `0.15rem solid ${isDarkMode ? '#f50057' : '#f50057'}`, borderRadius: '2rem', padding: '1rem' }}>
+            <Typography variant='h3' gutterBottom sx={{ display: 'flex', justifyContent: 'center' }}>
+            Find your Word!
+            </Typography>
+            <SearchBar word={word} setWord={setWord} onSearch={handleSearch} />
+            <SearchCard onSearch={handleSearch} word={word} searchWord={searchWord} wordInfo={wordInfo} handleResetSearch={handleResetSearch} />
+        </Container>
         </Box>
-
-
     </Box>
-)
+    );
 }
 
 export default Layout

@@ -1,4 +1,4 @@
-import {Box,Button,Container,List,ListItem,ListItemText} from '@mui/material';
+import {Button,Container,List,ListItem,ListItemText,Grid,Box} from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import {SearchResult} from '../Layout/Layout' 
@@ -28,7 +28,7 @@ export default function SearchCard({searchWord,wordInfo,handleResetSearch}:Searc
 
   const playAudio = () => {
     if(wordInfo?.audio){
-      const audio = new Audio(wordInfo.audio[1])
+      const audio = new Audio(wordInfo.audio[0])
       audio.play()
       setIsPlayingAudio(true)
       setTimeout(()=>{
@@ -41,79 +41,66 @@ export default function SearchCard({searchWord,wordInfo,handleResetSearch}:Searc
 
 
   return (
-
-
-<Box sx={{ display:'flex',flexDirection:'column', alignItems:'center',width:'100%'}}>
-  
-            <CardContent sx={{display:'flex',flexDirection:'column',alignItems:'center',width:'100%'}}>    
-            {searchWord && (
-              
-                <Container sx={{display:'flex',flexDirection:'column',alignItems:'flex-start',width:'100%',borderBottom:'0.05rem solid'}}>
-                
-                <Typography variant="h5" sx={{marginBottom:'0.25rem',fontWeight:'bold'}}>
-                  {searchWord.toUpperCase()}
-                </Typography>
-
-                <Container sx={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                <Typography sx={{ color:'secondary.main' }}>
-                  {wordInfo.pronunciation[0]}                    
-                </Typography>
-                <Button>
-                  <VolumeUpIcon onClick={playAudio} />
-                </Button>
-                  
-                  </Container>    
-
-      
-                </Container>
-            )}  
-                <Container>
-                <List>  
-                  {searchWord && (
-                    <Typography sx={{fontWeight:'bold'}}>
-                  Meaning
-                    </Typography>                    
-                  )}
-                    {wordInfo.definition.map((el,index)=>(
-                      <ListItem key={index} sx={{ "&::before": { content: "'\\2022'", marginRight: "8px", fontSize: "2rem", color: "secondary.main" } }}>
-                        <ListItemText primary={el}/>
-                      </ListItem>
-
-                    ))
-
-                    }  
-  
-                </List>                 
-                <List>  
-                  {searchWord && (
-                  
-                    <Typography sx={{fontWeight:'bold'}}>
-                  Examples
-                    </Typography>  
-                  
-                  )}
-                    {wordInfo.example.map((el,index)=>(
-                      <ListItem key={index} sx={{ "&::before": { content: "'\\2022'", marginRight: "8px", fontSize: "2rem", color: "secondary.main" } }}>
-                        <ListItemText primary={el}/>
-                      </ListItem>
-
-                    ))
-
-                    }  
-  
-                </List>                 
-                </Container>
-            </CardContent> 
-            {searchWord && ( 
-            <Button onClick={handleResetSearch} variant='contained' color='secondary'>
-              <Typography sx={{fontWeight:'bold'}}>
-              Find a new Word!
+    <Grid container justifyContent='center' alignItems='center' spacing={2}>
+  <Grid item xs={12}>  
+    <CardContent>    
+      {searchWord && (              
+        <Container sx={{borderBottom:'0.05rem solid'}}>
+          <Typography variant="h5" sx={{marginBottom:'0.25rem',fontWeight:'bold'}}>
+            {searchWord.toUpperCase()}
+          </Typography>
+          <Grid container justifyContent='space-between' alignItems='center'>
+            <Grid item>
+              <Typography sx={{ color:'secondary.main' }}>
+                {wordInfo.pronunciation[0]}                    
               </Typography>
-              </Button>       
-            
-            )}
-    </Box>
-          
+            </Grid>
+            <Grid item>
+              <Button>
+                <VolumeUpIcon onClick={playAudio} />
+              </Button>
+            </Grid>                  
+          </Grid> 
+        </Container>
+      )}  
+      <Container>
+        {searchWord && (
+          <>
+            <Typography sx={{fontWeight:'bold'}}>Meaning</Typography>
+            <List>
+              {wordInfo.definition.map((el,index)=>(
+                <ListItem key={index} sx={{ "&::before": { content: "'\\2022'", marginRight: "8px", fontSize: "2rem", color: "secondary.main" } }}>
+                  <ListItemText primary={el}/>
+                </ListItem>
+              ))}
+            </List>  
+          </>
+        )}
+        {searchWord && (
+          <>
+            <Typography sx={{fontWeight:'bold'}}>Examples</Typography>  
+            <List>
+              {wordInfo.example.map((el,index)=>(
+                <ListItem key={index} sx={{ "&::before": { content: "'\\2022'", marginRight: "8px", fontSize: "2rem", color: "secondary.main" } }}>
+                  <ListItemText primary={el}/>
+                </ListItem>
+              ))}
+            </List>
+          </>
+        )}                 
+      </Container>
+    </CardContent> 
+  </Grid>
+  {searchWord && (
+    <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
+      <Button onClick={handleResetSearch} variant='contained' color='secondary'>
+        <Typography sx={{fontWeight:'bold'}}>
+          Find a new Word!
+        </Typography>
+      </Button>      
+    </Box> 
+  )}
+</Grid>
+  )}
 
-  );
-}
+

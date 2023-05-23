@@ -15,10 +15,11 @@ function App() {
     if(storedDarkMode){
       setIsDarkMode(JSON.parse(storedDarkMode))
     }
-  },[isDarkMode])
+  },[])
   const toggleTheme = () =>{
-    setIsDarkMode(!isDarkMode)
-    localStorage.setItem('isDarkMode',JSON.stringify(!isDarkMode))
+    const newDarkMode = !isDarkMode
+    setIsDarkMode(newDarkMode)
+    localStorage.setItem('isDarkMode',JSON.stringify(newDarkMode))
   }
 
   const theme = createTheme({

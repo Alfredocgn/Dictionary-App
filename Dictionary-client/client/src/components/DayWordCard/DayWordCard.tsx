@@ -1,4 +1,4 @@
-import {Box,Container,List,ListItem,ListItemText } from '@mui/material';
+import {Grid,Container,List,ListItem,ListItemText } from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
@@ -50,54 +50,49 @@ useEffect(() => {
     }
 },[])
 return (
-    <Box sx={{ display:'flex',flexDirection:'column', alignItems:'center',width:'100%'}}>
-            <CardContent sx={{display:'flex',flexDirection:'column',alignItems:'center',width:'100%'}}>
-                <Typography variant='h3' gutterBottom>
-                    Word of the Day
+    <Grid container justifyContent="center" alignItems="center">
+        <Grid item xs={12}>
+        <CardContent>
+            <Typography variant='h3' gutterBottom>
+            Word of the Day
+            </Typography>
+            {wordOfTheDay?.word && (
+            <Container sx={{ borderBottom: '0.05rem solid' }}>
+                <Typography variant="h5" sx={{ marginBottom: '0.25rem', fontWeight: 'bold' }}>
+                {(wordOfTheDay.word).toUpperCase()}
                 </Typography>
-                <Container sx={{display:'flex',flexDirection:'column',alignItems:'flex-start',width:'100%',borderBottom:'0.05rem solid'}}>
-                {wordOfTheDay?.word && 
-                <Typography variant="h5" sx={{marginBottom:'0.25rem',fontWeight:'bold'}}>
-                    {(wordOfTheDay.word).toUpperCase()}
-                </Typography>
-                }
-                </Container>
-                <Container>
-                    {wordOfTheDay && (
-                <List>  
-                    <Typography sx={{fontWeight:'bold'}}>
-                    Meaning
-                    </Typography> 
-                    {wordOfTheDay?.definitions && 
-                    wordOfTheDay.definitions.map((el,index) =>(
+            </Container>
+            )}
+            <Container>
+            {wordOfTheDay && (
+                <>
+                <Typography sx={{ fontWeight: 'bold' }}>Meaning</Typography>
+                <List>
+                    {wordOfTheDay?.definitions &&
+                    wordOfTheDay.definitions.map((el, index) => (
                         <ListItem key={index} sx={{ "&::before": { content: "'\\2022'", marginRight: "8px", fontSize: "2rem", color: "secondary.main" } }}>
-                            <ListItemText primary={(el.text)}/>
-                        </ListItem> 
-                    ) )
-                    
-                    }   
-                </List>                 
-                        
-                    )}
-                    {wordOfTheDay && (
-                <List>  
-                    <Typography sx={{fontWeight:'bold'}}>
-                        Examples
-                    </Typography> 
-                    {wordOfTheDay?.examples && 
-                    wordOfTheDay.examples.map((el,index) =>(
-                    <ListItem key={index} sx={{ "&::before": { content: "'\\2022'", marginRight: "8px", fontSize: "2rem", color: "secondary.main" } }}>
-                        <ListItemText primary={el.text}/>
-                    </ListItem> 
-                    ) )
-                    
-                    }   
-                </List>                 
-
-                    )}
-                </Container>
-            </CardContent>          
-    </Box>
-);
+                        <ListItemText primary={el.text} />
+                        </ListItem>
+                    ))}
+                </List>
+                </>
+            )}
+            {wordOfTheDay && (
+                <>
+                <Typography sx={{ fontWeight: 'bold' }}>Examples</Typography>
+                <List>
+                    {wordOfTheDay?.examples &&
+                    wordOfTheDay.examples.map((el, index) => (
+                        <ListItem key={index} sx={{ "&::before": { content: "'\\2022'", marginRight: "8px", fontSize: "2rem", color: "secondary.main" } }}>
+                        <ListItemText primary={el.text} />
+                        </ListItem>
+                    ))}
+                </List>
+                </>
+            )}
+            </Container>
+        </CardContent>
+        </Grid>
+    </Grid>
+    );
 }
-

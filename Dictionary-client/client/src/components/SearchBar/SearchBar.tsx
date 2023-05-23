@@ -52,27 +52,26 @@ export const SearchBar = ({onSearch,word,setWord}:Props) => {
   }
 
   return (
-    <Box sx={{display:'flex',justifyContent:'center',width:'100%',marginTop:'1rem'}}>
-      <Paper sx={{display:'flex',width:'100%'}}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '1rem' }}>
+      <Paper sx={{ display: 'flex', width: '100%' }}>
         <TextField
-        sx={{'& fieldset': {border:'none'}, width:'100%'}}
-        onChange={handleChange} 
-        placeholder='Insert your word'
-        value ={word}
-        onKeyDown={handleKeyDown}
-        />{showClearButton && 
+          sx={{ '& fieldset': { border: 'none' }, width: '100%' }}
+          onChange={handleChange}
+          placeholder='Insert your word'
+          value={word}
+          onKeyDown={handleKeyDown}
+        />
+        {showClearButton && (
           <IconButton onClick={handleClearClick} type='button' aria-label='search'>
-            <ClearIcon/>
-          </IconButton>}
-          {word && 
-          <IconButton onClick={handleSearch}>
-            {isLoading && <Typography>Loading...</Typography>}
-            <SearchIcon/>
+            <ClearIcon />
           </IconButton>
-          }
+        )}
+        {word && (
+          <IconButton onClick={handleSearch}>
+            {isLoading ? <Typography>Loading...</Typography> : <SearchIcon />}
+          </IconButton>
+        )}
       </Paper>
     </Box>
-
-
-  )
+  );
 }
