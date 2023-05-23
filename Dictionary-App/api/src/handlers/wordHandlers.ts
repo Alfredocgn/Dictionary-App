@@ -17,7 +17,7 @@ export const getWordHandler = async (req, res) => {
     res.status(200).json(wordDef)
   } catch (error) {
     if (error.response?.status === 404) {
-      res.json({ error: `Word ${word}not found` })
+      res.json({ error: `Word ${word} not found` })
     }
     console.error(error)
     return {
