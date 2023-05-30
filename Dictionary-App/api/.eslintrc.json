@@ -1,11 +1,6 @@
 {
-  "extends": [
-    "standard",
-    "plugin:@typescript-eslint/recommended"
-  ],
-  "plugins": [
-    "@typescript-eslint"
-  ],
+  "extends": ["standard", "plugin:@typescript-eslint/recommended"],
+  "plugins": ["@typescript-eslint"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 2020,
@@ -15,8 +10,9 @@
     "node": true
   },
   "rules": {
-    "semi": "error",
-    "max-len":"off",
-    "no-multiple-empty-lines": "off"
+    "semi": "off",
+    "max-len": "off",
+    "no-multiple-empty-lines": "off",
+    "quotes": "off"
   }
 }
