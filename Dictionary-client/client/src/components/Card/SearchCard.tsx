@@ -13,13 +13,7 @@ import { useState } from "react";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { WordInfo } from "../Layout/Layout";
 
-type Definition = {
-  word: string;
-  definition: string[];
-  audio: string[];
-  example: string[];
-  pronunciation: string[];
-};
+
 
 type SearchCardProps = {
   wordInfo: WordInfo;
@@ -45,6 +39,7 @@ export default function SearchCard({
       }, 3000);
     }
   };
+
 
   return (
     <Grid container justifyContent="center" alignItems="center" spacing={2}>
@@ -76,7 +71,6 @@ export default function SearchCard({
               <Typography sx={{ fontWeight: "bold" }}>Meaning</Typography>
               <List>
                 {wordInfo.definition.map((el, index) => {
-                  console.log(el.split(" "));
                   return (
                     <ListItem
                       key={index}
@@ -93,12 +87,13 @@ export default function SearchCard({
                     >
                       {el.split(" ").map((word, index) => {
                         if (word.length <= 2) {
-                          return <p key={index}>{`${word}`}</p>;
+                          return <Typography sx={{display:'flex'}} key={index}>{`${word}`}</Typography>;
                         } else {
                           return (
                             <Typography
                               sx={{
                                 cursor: "pointer",
+                                display:'flex'
                               }}
                               onClick={(event) => {
                                 setNewWord(event.target.innerHTML);
@@ -118,10 +113,13 @@ export default function SearchCard({
             <>
               <Typography sx={{ fontWeight: "bold" }}>Examples</Typography>
               <List>
-                {wordInfo.example.map((el, index) => (
+                {wordInfo.example.map((el, index) => {
+                  return (
                   <ListItem
                     key={index}
                     sx={{
+                      display:'flex',
+                      gap: '5px',
                       "&::before": {
                         content: "'\\2022'",
                         marginRight: "8px",
@@ -129,10 +127,27 @@ export default function SearchCard({
                         color: "secondary.main",
                       },
                     }}
-                  >
-                    <ListItemText primary={el} />
+                  >{el.split(" ").map((word,index)=>{
+                    if(word.length<=2){
+                      return(<Typography key={index}>{`${word}`}</Typography>)
+                    }else{
+                      return(
+                        <Typography
+                        sx={{cursor:'pointer'}}
+                        onClick={(event)=>{
+                          setNewWord(event.target.innerHTML)
+                        }}
+                        key={index}
+                        >
+                          {`${word}`}
+                        </Typography>
+                      )
+                    }
+                  })}
                   </ListItem>
-                ))}
+
+                  )
+                })}
               </List>
             </>
           </Container>
