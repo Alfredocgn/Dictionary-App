@@ -3,21 +3,22 @@ import {
   Container,
   List,
   ListItem,
-  ListItemText,
   Grid,
   Box,
 } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
-import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { WordInfo } from "../Layout/Layout";
+import {MouseEvent} from 'react'
+import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 
 
 
 type SearchCardProps = {
   wordInfo: WordInfo;
   handleResetSearch: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setNewWord: any;
 };
 
@@ -60,7 +61,7 @@ export default function SearchCard({
               </Grid>
               <Grid item>
                 <Button>
-                  <VolumeUpIcon onClick={playAudio} />
+                  <PlayCircleOutlineIcon onClick={playAudio} fontSize="large" />
                 </Button>
               </Grid>
             </Grid>
@@ -75,8 +76,6 @@ export default function SearchCard({
                     <ListItem
                       key={index}
                       sx={{
-                        display: "flex",
-                        gap: "5px",
                         "&::before": {
                           content: "'\\2022'",
                           marginRight: "8px",
@@ -91,12 +90,15 @@ export default function SearchCard({
                         } else {
                           return (
                             <Typography
+                            component='span'
                               sx={{
                                 cursor: "pointer",
-                                display:'flex'
+                                display:'flex',
+                                marginRight:'5px'
                               }}
-                              onClick={(event) => {
-                                setNewWord(event.target.innerHTML);
+                              onClick={(event: MouseEvent<HTMLSpanElement>) => {
+                                const target = event.target as HTMLSpanElement
+                                setNewWord(target.innerHTML);
                               }}
                               key={index}
                             >{`${word}`}</Typography>
@@ -118,28 +120,33 @@ export default function SearchCard({
                   <ListItem
                     key={index}
                     sx={{
-                      display:'flex',
-                      gap: '5px',
                       "&::before": {
                         content: "'\\2022'",
                         marginRight: "8px",
                         fontSize: "2rem",
                         color: "secondary.main",
+                        overflowWrap: "break-word"
+                        
+
                       },
                     }}
                   >{el.split(" ").map((word,index)=>{
                     if(word.length<=2){
-                      return(<Typography key={index}>{`${word}`}</Typography>)
+                      return(<Typography sx={{overflowWrap: "break-word"}}key={index}>{`${word}`}</Typography>)
                     }else{
                       return(
-                        <Typography
-                        sx={{cursor:'pointer'}}
+                        <Typography>
+                        <span
+                        style={{cursor:'pointer', marginRight:'5px'}}
                         onClick={(event)=>{
-                          setNewWord(event.target.innerHTML)
+                          const target = event.target as HTMLSpanElement
+                          setNewWord(target.innerHTML)
                         }}
                         key={index}
                         >
                           {`${word}`}
+                        </span>
+
                         </Typography>
                       )
                     }

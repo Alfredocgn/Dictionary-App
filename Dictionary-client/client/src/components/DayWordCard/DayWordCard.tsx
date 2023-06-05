@@ -1,7 +1,8 @@
-import {Grid,Container,List,ListItem,ListItemText } from '@mui/material';
+import {Grid,Container,List,ListItem,ListItemText, Button } from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
+import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 // import cron from 'node-cron'
 
 type Definition = {
@@ -20,40 +21,68 @@ type WordOfTheDay = {
     examples: Example[];
 }
 
-export default function DayWordCard() {
-const [wordOfTheDay,SetWordOfTheDay] = useState<WordOfTheDay | null>(null)
+type AditionalInfo = {
+    audio: string[];
+    pronunciation:string[];
+}
 
-useEffect(() => {
-    const fetchWordOfTheDay =  () => {
-        fetch(`http://localhost:3001/random`)
-        .then(response => response.json())
-        .then(data => {
-            SetWordOfTheDay(data);
-            localStorage.setItem('wordOfTheDay',JSON.stringify(data))
-        })
-    }
+export default function DayWordCard({wordOfTheDay }) {
+    console.log(wordOfTheDay)
+// const [wordOfTheDay,SetWordOfTheDay] = useState<WordOfTheDay | null>(null)
+// const [aditionalInfo,setAditionalInfo] = useState<AditionalInfo>()
 
-    const cachedWordOfTheDay = localStorage.getItem('wordOfTheDay');
+// useEffect(() => {
+//     const fetchWordOfTheDay =  () => {
+//         fetch(`http://localhost:3001/random`)
+//         .then(response => response.json())
+//         .then(data => {
+//             console.log(data)
+//             SetWordOfTheDay(data);
+//             localStorage.setItem('wordOfTheDay',JSON.stringify(data))        
+//         })
+//     }
 
-    if(cachedWordOfTheDay){
-        const cachedData = JSON.parse(cachedWordOfTheDay)
-        const publishDate = new Date(cachedData.publishDate)
-        const currentDate = new Date()
-        if(publishDate.toDateString() !== currentDate.toDateString()){
-            fetchWordOfTheDay()
-        }else{
-            SetWordOfTheDay(cachedData)
-        }
-    }else {
+//     const cachedWordOfTheDay = localStorage.getItem('wordOfTheDay');
 
-        fetchWordOfTheDay()
-    }
-},[])
+//     if(cachedWordOfTheDay){
+//         const cachedData = JSON.parse(cachedWordOfTheDay)
+//         const publishDate = new Date(cachedData.publishDate)
+//         const currentDate = new Date()
+//         if(publishDate.toDateString() !== currentDate.toDateString()){
+//             fetchWordOfTheDay()
+//         }else{
+//             SetWordOfTheDay(cachedData)
+//         }
+//     }else {
+
+//         fetchWordOfTheDay()
+//     }
+// },[])
+
+// useEffect(() => {
+//     const word = JSON.parse(localStorage.getItem('wordOfTheDay'))
+//     console.log(word)
+//     fetch(`http://localhost:3001?word=${word.word}`)
+//         .then((response) => response.json())
+//         .then((data) => {
+//             console.log(data);
+//             setAditionalInfo({
+//                 audio: data.audio,
+//                 pronunciation: data.pronunciation,
+//             });
+//         })
+//         .catch((error) => {
+//             console.log(error)
+//         ;
+//         });
+//     },[]);
+
+
 return (
-    <Grid container justifyContent="center" alignItems="center">
+    <Grid container sx={{justifyContent:"center" , alignItems:"center",display:'flex'}} >
         <Grid item xs={12}>
-        <CardContent>
-            <Typography variant='h3' gutterBottom>
+        <CardContent sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+            <Typography variant='h3'>
             Word of the Day
             </Typography>
             {wordOfTheDay?.word && (
@@ -61,6 +90,18 @@ return (
                 <Typography variant="h5" sx={{ marginBottom: '0.25rem', fontWeight: 'bold' }}>
                 {(wordOfTheDay.word).toUpperCase()}
                 </Typography>
+                <Grid container justifyContent="space-between" alignItems="center">
+                <Grid item>
+                <Typography sx={{ color: "secondary.main" }}>
+                    hola
+                </Typography>
+                </Grid>
+                <Grid item>
+                <Button>
+                    <PlayCircleOutlineIcon  fontSize='large'/>
+                </Button>
+                </Grid>
+            </Grid>
             </Container>
             )}
             <Container>
