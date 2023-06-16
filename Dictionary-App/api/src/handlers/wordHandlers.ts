@@ -20,7 +20,7 @@ export const getWordHandler = async (req, res) => {
     console.error(error);
     return {
       error: "Word not found",
-      status: 500,
+      status: 500
     };
   }
 };

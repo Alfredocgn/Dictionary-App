@@ -2,7 +2,6 @@ import {
   Button,
   Container,
   List,
-  ListItem,
   Grid,
   Box,
 } from "@mui/material";
@@ -40,7 +39,7 @@ export default function SearchCard({
       }, 3000);
     }
   };
-
+console.log(wordInfo.definition)
 
   return (
     <Grid container justifyContent="center" alignItems="center" spacing={2}>
@@ -73,40 +72,42 @@ export default function SearchCard({
               <List>
                 {wordInfo.definition.map((el, index) => {
                   return (
-                    <ListItem
+                    <ul
                       key={index}
-                      sx={{
-                        "&::before": {
-                          content: "'\\2022'",
-                          marginRight: "8px",
-                          fontSize: "2rem",
-                          color: "secondary.main",
-                        },
-                      }}
+                      // sx={{
+                      //   "&::before": {
+                      //     content: "'\\2022'",
+                      //     marginRight: "8px",
+                      //     fontSize: "2rem",
+                      //     color: "secondary.main",
+                      //     wordBreak: "break-word"
+                      //   },
+                      // }}
                     >
+                      <li>
                       {el.split(" ").map((word, index) => {
                         if (word.length <= 2) {
-                          return <Typography sx={{display:'flex'}} key={index}>{`${word}`}</Typography>;
+                          return <p style={{marginRight: '0.25rem',display:'inline-block'}} key={index}>{`  ${word}`}</p>;
                         } else {
                           return (
-                            <Typography
-                            component='span'
-                              sx={{
+                            <p
+                              style={{
                                 cursor: "pointer",
-                                display:'flex',
-                                marginRight:'5px'
+                                marginRight : '0.25rem',
+                                display:'inline-block'
                               }}
                               onClick={(event: MouseEvent<HTMLSpanElement>) => {
                                 const target = event.target as HTMLSpanElement
                                 setNewWord(target.innerHTML);
                               }}
                               key={index}
-                            >{`${word}`}</Typography>
+                            >{`${word}`}</p>
                           );
                         }
                       })}
                       {/* <ListItemText primary={el} /> */}
-                    </ListItem>
+                      </li>
+                    </ul>
                   );
                 })}
               </List>
@@ -114,30 +115,29 @@ export default function SearchCard({
 
             <>
               <Typography sx={{ fontWeight: "bold" }}>Examples</Typography>
-              <List>
+              <p>
                 {wordInfo.example.map((el, index) => {
                   return (
-                  <ListItem
+                  <ul
                     key={index}
-                    sx={{
-                      "&::before": {
-                        content: "'\\2022'",
-                        marginRight: "8px",
-                        fontSize: "2rem",
-                        color: "secondary.main",
-                        overflowWrap: "break-word"
-                        
-
-                      },
-                    }}
-                  >{el.split(" ").map((word,index)=>{
+                    // sx={{
+                    //   "&::before": {
+                    //     content: "'\\2022'",
+                    //     marginRight: "8px",
+                    //     fontSize: "2rem",
+                    //     color: "secondary.main"
+                    //   },
+                    // }}
+                    
+                  >
+                    <li>
+                    {el.split(" ").map((word,index)=>{
                     if(word.length<=2){
-                      return(<Typography sx={{overflowWrap: "break-word"}}key={index}>{`${word}`}</Typography>)
+                      return(<p style={{cursor:'pointer',display:'inline-block',marginRight:'0.25rem'}} key={index}>{`${word}`}</p>)
                     }else{
                       return(
-                        <Typography>
-                        <span
-                        style={{cursor:'pointer', marginRight:'5px'}}
+                        <p    
+                        style={{cursor:'pointer',display:'inline-block',marginRight:'0.25rem'}}                 
                         onClick={(event)=>{
                           const target = event.target as HTMLSpanElement
                           setNewWord(target.innerHTML)
@@ -145,17 +145,17 @@ export default function SearchCard({
                         key={index}
                         >
                           {`${word}`}
-                        </span>
 
-                        </Typography>
+                        </p>
                       )
                     }
                   })}
-                  </ListItem>
+                  </li>
+                  </ul>
 
                   )
                 })}
-              </List>
+              </p>
             </>
           </Container>
         </CardContent>

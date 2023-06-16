@@ -3,7 +3,7 @@ import { Box, CircularProgress, Container, Typography } from "@mui/material";
 import NavBar from "../NavBar/NavBar";
 import { SearchBar } from "../SearchBar/SearchBar";
 import SearchCard from "../Card/SearchCard";
-import DayWordCard from "../DayWordCard/DayWordCard";
+import DayWordCard, { WordOfTheDay } from "../DayWordCard/DayWordCard";
 
 export interface SearchResult {
   word: string;
@@ -20,17 +20,7 @@ export interface WordInfo {
   example: string[];
   pronunciation: string[];
 }
-type WordOfTheDay = {
-  word:string;
-  phonetics:string;
-  definitions:Definition[];
-  examples: Example[];
-}
 
-type AditionalInfo = {
-  audio: string[];
-  pronunciation:string[];
-}
 export type responseStatusType = "idle" | "loading" | "success" | "error";
 
 const Layout = ({
@@ -142,7 +132,7 @@ const Layout = ({
             borderRadius: "2rem",
           }}
         >
-          <DayWordCard wordOfTheDay= {wordOfTheDay} />
+          <DayWordCard setNewWord={setNewWord} wordOfTheDay= {wordOfTheDay} />
         </Container>
         <Container
           sx={{
@@ -171,7 +161,7 @@ const Layout = ({
               setNewWord={setNewWord}
             />
           )}
-          {responseStatus === "error" && <p>error...</p>}
+          {responseStatus === "error" && <p style={{display:'flex',justifyContent:'center',fontWeight:'bold'}}>Word not found!</p>}
         </Container>
       </Box>
     </Box>
