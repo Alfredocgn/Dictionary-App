@@ -1,4 +1,4 @@
-import {Grid,Container,List,ListItem,ListItemText, Button } from '@mui/material';
+import {Grid,Container,List, Button } from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 // import { useEffect, useState } from 'react';
@@ -28,14 +28,19 @@ export type WordOfTheDay = {
 
 type DayPropsCard  ={
     wordOfTheDay : WordOfTheDay | null;
-    setNewWord: string[];
+     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    setNewWord: any;
 }
 
 export default function DayWordCard({wordOfTheDay, setNewWord} : DayPropsCard) {
 
-const def = wordOfTheDay?.definitions
-const words = def?.map(d => d.text.match(/\b\w+\b/g))
-console.log(words?.[0].map(el=>el))
+// const def = wordOfTheDay?.definitions
+// const words = def?.map(d => ({
+//     original:d.text,
+//     withoutPunctuation: d.text.replace(/[^\w\s]/g, ' ')
+
+// }))
+// console.log(words)
 // const joinWords = words?.join(' ')
 // console.log(joinWords)
 // console.log(words?.[0].map(el => console.log(el)))
@@ -81,14 +86,18 @@ return (
                                 <li>
                                     {el.text.split(' ').map((word,index)=>{
                                         if(word.length<2){
-                                            return(<p key={index} style={{cursor:'pointer',display:'inline-block', marginRight:'0.25rem'}}>{`${word}`}</p>)
-                                        }else{
+                                            return(<p 
+                                                key={index} 
+                                                style={{cursor:'pointer',display:'inline-block', marginRight:'0.25rem'}}>
+                                                    {`${word}`}
+                                                    </p>)
+                                        } else {
                                             return(
                                                 <p
                                                 key={index}
                                                 onClick={(e)=>{
-                                                    const target = e.target
-                                                    setNewWord(target.innerHTML)
+                                                    const target = e.target as HTMLSpanElement
+                                                    setNewWord(target.innerHTML.replace(/[^\w\s]/g, ' '))
                                                 }} 
                                                 style={{cursor:'pointer',display:'inline-block', marginRight:'0.25rem'}}>{`${word}`}</p>
                                             )
@@ -116,8 +125,8 @@ return (
                                         }else{
                                             return(<p
                                                 onClick={(e)=>{
-                                                    const target = e.target
-                                                    setNewWord(target.innerHTML)
+                                                    const target = e.target as HTMLSpanElement
+                                                    setNewWord(target.innerHTML.replace(/[^\w\s]/g, ' '))
                                                 }}
                                                 key={index} 
                                                 style={{cursor:'pointer',display:'inline-block',marginRight:'0.25rem'}}>{`${word}`}</p>)

@@ -42,7 +42,7 @@ const Layout = ({
         fetch(`http://localhost:3001/random`)
         .then(response => response.json())
         .then(data => {
-            console.log(data)
+            // console.log(data)
             SetWordOfTheDay(data);
             localStorage.setItem('wordOfTheDay',JSON.stringify(data))        
         })
@@ -89,7 +89,7 @@ const Layout = ({
       fetch(`http://localhost:3001?word=${newWord}`)
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           if (data.error) {
             setResponseStatus("error");
           } else {

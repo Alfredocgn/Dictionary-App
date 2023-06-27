@@ -39,7 +39,7 @@ export default function SearchCard({
       }, 3000);
     }
   };
-console.log(wordInfo.definition)
+// console.log(wordInfo.definition)
 
   return (
     <Grid container justifyContent="center" alignItems="center" spacing={2}>
@@ -98,7 +98,7 @@ console.log(wordInfo.definition)
                               }}
                               onClick={(event: MouseEvent<HTMLSpanElement>) => {
                                 const target = event.target as HTMLSpanElement
-                                setNewWord(target.innerHTML);
+                                setNewWord(target.innerHTML.replace(/[^\w\s]/g, ' '));
                               }}
                               key={index}
                             >{`${word}`}</p>
@@ -140,7 +140,7 @@ console.log(wordInfo.definition)
                         style={{cursor:'pointer',display:'inline-block',marginRight:'0.25rem'}}                 
                         onClick={(event)=>{
                           const target = event.target as HTMLSpanElement
-                          setNewWord(target.innerHTML)
+                          setNewWord(target.innerHTML.replace(/[^\w\s]/g, ' '))
                         }}
                         key={index}
                         >
