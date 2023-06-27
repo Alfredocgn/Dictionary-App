@@ -2,28 +2,22 @@ import {
   Button,
   Container,
   List,
-  ListItem,
-  ListItemText,
   Grid,
   Box,
 } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
-import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { WordInfo } from "../Layout/Layout";
+import {MouseEvent} from 'react'
+import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 
-type Definition = {
-  word: string;
-  definition: string[];
-  audio: string[];
-  example: string[];
-  pronunciation: string[];
-};
+
 
 type SearchCardProps = {
   wordInfo: WordInfo;
   handleResetSearch: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setNewWord: any;
 };
 
@@ -45,6 +39,7 @@ export default function SearchCard({
       }, 3000);
     }
   };
+// console.log(wordInfo.definition)
 
   return (
     <Grid container justifyContent="center" alignItems="center" spacing={2}>
@@ -65,7 +60,7 @@ export default function SearchCard({
               </Grid>
               <Grid item>
                 <Button>
-                  <VolumeUpIcon onClick={playAudio} />
+                  <PlayCircleOutlineIcon onClick={playAudio} fontSize="large" />
                 </Button>
               </Grid>
             </Grid>
@@ -76,40 +71,43 @@ export default function SearchCard({
               <Typography sx={{ fontWeight: "bold" }}>Meaning</Typography>
               <List>
                 {wordInfo.definition.map((el, index) => {
-                  console.log(el.split(" "));
                   return (
-                    <ListItem
+                    <ul
                       key={index}
-                      sx={{
-                        display: "flex",
-                        gap: "5px",
-                        "&::before": {
-                          content: "'\\2022'",
-                          marginRight: "8px",
-                          fontSize: "2rem",
-                          color: "secondary.main",
-                        },
-                      }}
+                      // sx={{
+                      //   "&::before": {
+                      //     content: "'\\2022'",
+                      //     marginRight: "8px",
+                      //     fontSize: "2rem",
+                      //     color: "secondary.main",
+                      //     wordBreak: "break-word"
+                      //   },
+                      // }}
                     >
+                      <li>
                       {el.split(" ").map((word, index) => {
                         if (word.length <= 2) {
-                          return <p key={index}>{`${word}`}</p>;
+                          return <p style={{marginRight: '0.25rem',display:'inline-block'}} key={index}>{`  ${word}`}</p>;
                         } else {
                           return (
-                            <Typography
-                              sx={{
+                            <p
+                              style={{
                                 cursor: "pointer",
+                                marginRight : '0.25rem',
+                                display:'inline-block'
                               }}
-                              onClick={(event) => {
-                                setNewWord(event.target.innerHTML);
+                              onClick={(event: MouseEvent<HTMLSpanElement>) => {
+                                const target = event.target as HTMLSpanElement
+                                setNewWord(target.innerHTML.replace(/[^\w\s]/g, ' '));
                               }}
                               key={index}
-                            >{`${word}`}</Typography>
+                            >{`${word}`}</p>
                           );
                         }
                       })}
                       {/* <ListItemText primary={el} /> */}
-                    </ListItem>
+                      </li>
+                    </ul>
                   );
                 })}
               </List>
@@ -117,23 +115,47 @@ export default function SearchCard({
 
             <>
               <Typography sx={{ fontWeight: "bold" }}>Examples</Typography>
-              <List>
-                {wordInfo.example.map((el, index) => (
-                  <ListItem
+              <p>
+                {wordInfo.example.map((el, index) => {
+                  return (
+                  <ul
                     key={index}
-                    sx={{
-                      "&::before": {
-                        content: "'\\2022'",
-                        marginRight: "8px",
-                        fontSize: "2rem",
-                        color: "secondary.main",
-                      },
-                    }}
+                    // sx={{
+                    //   "&::before": {
+                    //     content: "'\\2022'",
+                    //     marginRight: "8px",
+                    //     fontSize: "2rem",
+                    //     color: "secondary.main"
+                    //   },
+                    // }}
+                    
                   >
-                    <ListItemText primary={el} />
-                  </ListItem>
-                ))}
-              </List>
+                    <li>
+                    {el.split(" ").map((word,index)=>{
+                    if(word.length<=2){
+                      return(<p style={{cursor:'pointer',display:'inline-block',marginRight:'0.25rem'}} key={index}>{`${word}`}</p>)
+                    }else{
+                      return(
+                        <p    
+                        style={{cursor:'pointer',display:'inline-block',marginRight:'0.25rem'}}                 
+                        onClick={(event)=>{
+                          const target = event.target as HTMLSpanElement
+                          setNewWord(target.innerHTML.replace(/[^\w\s]/g, ' '))
+                        }}
+                        key={index}
+                        >
+                          {`${word}`}
+
+                        </p>
+                      )
+                    }
+                  })}
+                  </li>
+                  </ul>
+
+                  )
+                })}
+              </p>
             </>
           </Container>
         </CardContent>

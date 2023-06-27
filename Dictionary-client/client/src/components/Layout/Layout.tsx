@@ -3,7 +3,7 @@ import { Box, CircularProgress, Container, Typography } from "@mui/material";
 import NavBar from "../NavBar/NavBar";
 import { SearchBar } from "../SearchBar/SearchBar";
 import SearchCard from "../Card/SearchCard";
-import DayWordCard from "../DayWordCard/DayWordCard";
+import DayWordCard, { WordOfTheDay } from "../DayWordCard/DayWordCard";
 
 export interface SearchResult {
   word: string;
@@ -20,6 +20,7 @@ export interface WordInfo {
   example: string[];
   pronunciation: string[];
 }
+
 export type responseStatusType = "idle" | "loading" | "success" | "error";
 
 const Layout = ({
@@ -33,6 +34,54 @@ const Layout = ({
   const [responseStatus, setResponseStatus] =
     useState<responseStatusType>("idle");
   const [wordInfo, setWordInfo] = useState<WordInfo>();
+  const [wordOfTheDay,SetWordOfTheDay] = useState<WordOfTheDay | null>(null)
+// const [aditionalInfo,setAditionalInfo] = useState<AditionalInfo>()
+
+  useEffect(() => {
+    const fetchWordOfTheDay =  () => {
+        fetch(`http://localhost:3001/random`)
+        .then(response => response.json())
+        .then(data => {
+            // console.log(data)
+            SetWordOfTheDay(data);
+            localStorage.setItem('wordOfTheDay',JSON.stringify(data))        
+        })
+    }
+
+    const cachedWordOfTheDay = localStorage.getItem('wordOfTheDay');
+
+    if(cachedWordOfTheDay){
+        const cachedData = JSON.parse(cachedWordOfTheDay)
+        const publishDate = new Date(cachedData.publishDate)
+        const currentDate = new Date()
+        if(publishDate.toDateString() !== currentDate.toDateString()){
+            fetchWordOfTheDay()
+        }else{
+            SetWordOfTheDay(cachedData)
+        }
+    }else {
+
+        fetchWordOfTheDay()
+    }
+},[])
+
+// useEffect(() => {
+//     const word = JSON.parse(localStorage.getItem('wordOfTheDay'))
+//     console.log(word)
+//     fetch(`http://localhost:3001?word=${word.word}`)
+//         .then((response) => response.json())
+//         .then((data) => {
+//             console.log(data);
+//             setAditionalInfo({
+//                 audio: data.audio,
+//                 pronunciation: data.pronunciation,
+//             });
+//         })
+//         .catch((error) => {
+//             console.log(error)
+//         ;
+//         });
+//     },[]);
 
   useEffect(() => {
     if (newWord) {
@@ -40,7 +89,7 @@ const Layout = ({
       fetch(`http://localhost:3001?word=${newWord}`)
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           if (data.error) {
             setResponseStatus("error");
           } else {
@@ -83,7 +132,7 @@ const Layout = ({
             borderRadius: "2rem",
           }}
         >
-          <DayWordCard />
+          <DayWordCard setNewWord={setNewWord} wordOfTheDay= {wordOfTheDay} />
         </Container>
         <Container
           sx={{
@@ -112,7 +161,7 @@ const Layout = ({
               setNewWord={setNewWord}
             />
           )}
-          {responseStatus === "error" && <p>error...</p>}
+          {responseStatus === "error" && <p style={{display:'flex',justifyContent:'center',fontWeight:'bold'}}>Word not found!</p>}
         </Container>
       </Box>
     </Box>

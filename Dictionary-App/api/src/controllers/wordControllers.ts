@@ -1,9 +1,11 @@
 import axios from "axios";
 import dotenv from "dotenv";
 dotenv.config();
-const { API_KEY } = process.env;
+const { API_KEY, MERRIAM_API_KEY } = process.env;
 
 const WORDNIK_GET_WORD_API_ENDPOINT = "https://api.wordnik.com/v4/word.json";
+
+
 
 export const getRandomWord = async () => {
   const randomWord = (
@@ -12,7 +14,6 @@ export const getRandomWord = async () => {
     )
   ).data;
   const result = randomWord;
-  console.log(result);
   return result;
 };
 
@@ -49,19 +50,13 @@ export const getWord = async (word: string) => {
     )
   ).data;
   const pronunciation = wordPronunciation.map((obj) => obj.raw);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // const result = wordDef.map((el: any) => {
-  //   return {
-  //     word: el.word,
-  //     def: el.meanings[0].definitions[0].definition,
-  //     phonetic: el.phonetics[0]?.text,
-  //     synonyms: el.meanings[0].definitions[0].synonyms?.map((synonym:string) => synonym),
-  //     antonyms: el.meanings[0].definitions[0].antonyms?.map((antonym:string) => antonym),
-  //     partOfSpeech: el.meanings[0].partOfSpeech,
-  //     source: el.sourceUrls[0],
-  //     audio: el.phonetics[0]?.audio
-  //   }
-  // })
-  // console.log(definition)
+  const rawWordInfoBackUp = (
+    await axios.get(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${MERRIAM_API_KEY}`)
+  ).data
+  const wordInfo = rawWordInfoBackUp
+  console.log(wordInfo)
+
   return { word, definition, audio, example, pronunciation };
 };
+
+
