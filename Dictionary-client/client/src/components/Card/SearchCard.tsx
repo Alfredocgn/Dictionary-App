@@ -70,7 +70,8 @@ export default function SearchCard({
             <>
               <Typography sx={{ fontWeight: "bold" }}>Meaning</Typography>
               <List>
-                {wordInfo.definition.map((el, index) => {
+                {wordInfo.definition.length > 0 ? 
+                wordInfo.definition.map((el, index) => {
                   return (
                     <ul
                       key={index}
@@ -109,14 +110,24 @@ export default function SearchCard({
                       </li>
                     </ul>
                   );
-                })}
+                }): 
+                    <ul>
+                    <li>{<p     
+                    onClick={(event: MouseEvent<HTMLSpanElement>) => {
+                    const target = event.target as HTMLSpanElement
+                    setNewWord(target.innerHTML.replace(/[^\w\s]/g, ' '));
+                              }} 
+                    >`${wordInfo.backupDefinition}`</p>}</li>
+                  </ul>
+                }
               </List>
             </>
 
             <>
               <Typography sx={{ fontWeight: "bold" }}>Examples</Typography>
               <p>
-                {wordInfo.example.map((el, index) => {
+                {wordInfo.example.length > 0 ? 
+                wordInfo.example.map((el, index) => {
                   return (
                   <ul
                     key={index}
@@ -154,7 +165,16 @@ export default function SearchCard({
                   </ul>
 
                   )
-                })}
+                }):
+                <ul>
+                <li>{<p     
+                onClick={(event: MouseEvent<HTMLSpanElement>) => {
+                const target = event.target as HTMLSpanElement
+                setNewWord(target.innerHTML.replace(/[^\w\s]/g, ' '));
+                          }} 
+                >`${wordInfo.backupQuote}`</p>}</li>
+              </ul>
+                }
               </p>
             </>
           </Container>

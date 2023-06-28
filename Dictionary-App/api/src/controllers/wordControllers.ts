@@ -54,9 +54,13 @@ export const getWord = async (word: string) => {
     await axios.get(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${MERRIAM_API_KEY}`)
   ).data
   const wordInfo = rawWordInfoBackUp
-  console.log(wordInfo)
+  const backupDef = wordInfo[0].shortdef
+  const backupPronunciation = wordInfo[0].hwi.prs[0].mw
+  const backupSound = wordInfo[0].hwi.prs[0].sound.audio
+  const backupQuote = wordInfo[0].quotes
 
-  return { word, definition, audio, example, pronunciation };
+
+  return { word, definition, audio, example, pronunciation, backupDef, backupPronunciation, backupSound, backupQuote };
 };
 
 

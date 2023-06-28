@@ -19,6 +19,10 @@ export interface WordInfo {
   audio: string[];
   example: string[];
   pronunciation: string[];
+  backupDefinition: string[];
+  backupQuote:string[];
+  backupPronunciation:string[];
+  backupSound:string[]
 }
 
 export type responseStatusType = "idle" | "loading" | "success" | "error";
@@ -100,6 +104,10 @@ const Layout = ({
               audio: data.audio,
               example: data.example,
               pronunciation: data.pronunciation,
+              backupDefinition: data.backupDef,
+              backupPronunciation: data.backupPronunciation,
+              backupSound: data.backupSound,
+              backupQuote: data.backupQuote,
             });
           }
         })
