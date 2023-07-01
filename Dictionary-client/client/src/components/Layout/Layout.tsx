@@ -19,10 +19,21 @@ export interface WordInfo {
   audio: string[];
   example: string[];
   pronunciation: string[];
-  backupDefinition: string[];
-  backupQuote:string[];
-  backupPronunciation:string[];
-  backupSound:string[]
+  // backupDefinition: string[];
+  // backupQuote:string[];
+  // backupPronunciation:string[];
+  // backupSound:string[]
+}
+export interface WordOfTheDay {
+  word: string;
+  definition: string[];
+  audio: string[];
+  example: string[];
+  pronunciation: string[];
+  // backupDefinition: string[];
+  // backupQuote:string[];
+  // backupPronunciation:string[];
+  // backupSound:string[]
 }
 
 export type responseStatusType = "idle" | "loading" | "success" | "error";
@@ -46,8 +57,14 @@ const Layout = ({
         fetch(`http://localhost:3001/random`)
         .then(response => response.json())
         .then(data => {
-            // console.log(data)
-            SetWordOfTheDay(data);
+            console.log(data)
+            SetWordOfTheDay({
+              word:data.result.word,
+              definitions:data.result.definitions,
+              examples: data.result.examples,
+              pronunciation:data.backupPronunciation,
+              audio:data.backupSound
+            });
             localStorage.setItem('wordOfTheDay',JSON.stringify(data))        
         })
     }
@@ -69,23 +86,6 @@ const Layout = ({
     }
 },[])
 
-// useEffect(() => {
-//     const word = JSON.parse(localStorage.getItem('wordOfTheDay'))
-//     console.log(word)
-//     fetch(`http://localhost:3001?word=${word.word}`)
-//         .then((response) => response.json())
-//         .then((data) => {
-//             console.log(data);
-//             setAditionalInfo({
-//                 audio: data.audio,
-//                 pronunciation: data.pronunciation,
-//             });
-//         })
-//         .catch((error) => {
-//             console.log(error)
-//         ;
-//         });
-//     },[]);
 
   useEffect(() => {
     if (newWord) {
@@ -93,29 +93,25 @@ const Layout = ({
       fetch(`http://localhost:3001?word=${newWord}`)
         .then((response) => response.json())
         .then((data) => {
-          // console.log(data);
-          if (data.error) {
-            setResponseStatus("error");
-          } else {
-            setResponseStatus("success");
+          if (data.finalDef && data.finalDef.length >= 0 ) {
             setWordInfo({
               word: data.word,
-              definition: data.definition,
-              audio: data.audio,
-              example: data.example,
-              pronunciation: data.pronunciation,
-              backupDefinition: data.backupDef,
-              backupPronunciation: data.backupPronunciation,
-              backupSound: data.backupSound,
-              backupQuote: data.backupQuote,
+              definition: data.finalDef.filter(Boolean).slice(0,2),
+              audio: data.finalAudio,
+              example: data.finalExample.filter(Boolean),
+              pronunciation: data.finalPronunciation,
             });
-          }
+            console.log(wordInfo?.example)
+            setResponseStatus("success")
+          }else{
+            setResponseStatus("error")}
         })
         .catch(() => {
           setResponseStatus("error");
         });
     }
   }, [newWord]);
+
 
   const handleResetSearch = () => {
     setWordInfo(undefined);
@@ -140,7 +136,7 @@ const Layout = ({
             borderRadius: "2rem",
           }}
         >
-          <DayWordCard setNewWord={setNewWord} wordOfTheDay= {wordOfTheDay} />
+          <DayWordCard setNewWord={setNewWord} wordOfTheDay= {wordOfTheDay}/>
         </Container>
         <Container
           sx={{

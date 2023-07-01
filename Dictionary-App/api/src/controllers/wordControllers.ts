@@ -7,60 +7,122 @@ const WORDNIK_GET_WORD_API_ENDPOINT = "https://api.wordnik.com/v4/word.json";
 
 
 
+// export const getRandomWord = async () => {
+//   try {
+//     const randomWord = (
+//       await axios.get(
+//         `https://api.wordnik.com/v4/words.json/wordOfTheDay?api_key=${API_KEY}`
+//       )
+//     ).data;
+//     const result = randomWord;
+//     console.log(result.word)
+//     const rawWordInfoBackUp = await axios.get(
+//       `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${result.word}?key=${MERRIAM_API_KEY}`
+//     );
+//     const backupPronunciation = rawWordInfoBackUp.data[0]?.hwi?.prs?.[0]?.mw;
+//     const backupSound = rawWordInfoBackUp.data[0]?.hwi?.prs?.[0]?.sound?.audio;
+//   } catch (error) { console.log(error) }
+//   const randomWord = {
+//     result,
+//     backupPronunciation,
+//     backupSound
+//   }
+//   return randomWord
+// };
+
 export const getRandomWord = async () => {
-  const randomWord = (
-    await axios.get(
-      `https://api.wordnik.com/v4/words.json/wordOfTheDay?api_key=${API_KEY}`
-    )
-  ).data;
-  const result = randomWord;
-  return result;
-};
+  try {
+    const randomWord = (
+      await axios.get(
+        `https://api.wordnik.com/v4/words.json/wordOfTheDay?api_key=${API_KEY}`
+      )
+    ).data;
+    console.log(randomWord.word);
+
+    const rawWordInfoBackUp = await axios.get(
+      `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${randomWord.word}?key=${MERRIAM_API_KEY}`
+    );
+    const backupPronunciation = rawWordInfoBackUp.data[0]?.hwi?.prs?.[0]?.mw;
+    // const backupSound = rawWordInfoBackUp.data[0]?.hwi?.prs?.[0]?.sound?.audio;
+
+    const wordAudio = await axios.get(
+      `${WORDNIK_GET_WORD_API_ENDPOINT}/${randomWord.word}/audio?useCanonical=false&limit=50&api_key=${API_KEY}`
+    );
+    const backupSound = wordAudio.data.map((obj: { fileUrl: string }) => obj.fileUrl);
+
+    const randomWordData = {
+      result: randomWord,
+      backupPronunciation,
+      backupSound
+    };
+
+    return randomWordData;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
 
 export const getWord = async (word: string) => {
-  const wordDef = (
-    await axios.get(
+  let finalDef: string[] = [];
+  let finalExample: string[] = [];
+  let finalAudio: string[] = [];
+  let finalPronunciation: string[] = [];
+
+  try {
+    const wordDef = await axios.get(
       `${WORDNIK_GET_WORD_API_ENDPOINT}/${word}/definitions?limit=200&includeRelated=false&sourceDictionaries=all&useCanonical=false&includeTags=false&api_key=${API_KEY}`
-    )
-  ).data;
-  const rawDefinition = wordDef.map((obj) => obj.text);
-  const sliceDefinition = rawDefinition.slice(0, 2);
-  const definition = sliceDefinition.filter(
-    (definition) => definition !== undefined
-  );
-  const wordAudio = (
-    await axios.get(
+    );
+    finalDef = wordDef.data.map((obj: { text: string }) => obj.text);
+
+    const wordAudio = await axios.get(
       `${WORDNIK_GET_WORD_API_ENDPOINT}/${word}/audio?useCanonical=false&limit=50&api_key=${API_KEY}`
-    )
-  ).data;
-  const audio = wordAudio.map((obj) => obj.fileUrl);
-  const wordExample = (
-    await axios.get(
+    );
+    finalAudio = wordAudio.data.map((obj: { fileUrl: string }) => obj.fileUrl);
+
+    const wordExample = await axios.get(
       `${WORDNIK_GET_WORD_API_ENDPOINT}/${word}/examples?includeDuplicates=false&useCanonical=false&limit=5&api_key=${API_KEY}`
-    )
-  ).data;
-  const rawExample = wordExample.examples.map((obj) => obj.text);
-  const sliceExample = rawExample.slice(0, 2);
-  const example = sliceExample.filter((example, index, self) => {
-    return self.indexOf(example) === index;
-  });
-  const wordPronunciation = (
-    await axios.get(
+    );
+    finalExample = wordExample.data.examples
+      .map((obj: { text: string }) => obj.text)
+      .slice(0, 2)
+      .filter((ex: string, index: number, self: string[]) => self.indexOf(ex) === index);
+
+    const wordPronunciation = await axios.get(
       `${WORDNIK_GET_WORD_API_ENDPOINT}/${word}/pronunciations?useCanonical=false&limit=50&api_key=${API_KEY}`
-    )
-  ).data;
-  const pronunciation = wordPronunciation.map((obj) => obj.raw);
-  const rawWordInfoBackUp = (
-    await axios.get(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${MERRIAM_API_KEY}`)
-  ).data
-  const wordInfo = rawWordInfoBackUp
-  const backupDef = wordInfo[0].shortdef
-  const backupPronunciation = wordInfo[0].hwi.prs[0].mw
-  const backupSound = wordInfo[0].hwi.prs[0].sound.audio
-  const backupQuote = wordInfo[0].quotes
+    );
+    finalPronunciation = wordPronunciation.data.map((obj: { raw: string }) => obj.raw);
 
+    const rawWordInfoBackUp = await axios.get(
+      `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${MERRIAM_API_KEY}`
+    );
+    const backupDef = rawWordInfoBackUp.data[0]?.shortdef || [];
+    const backupPronunciation = rawWordInfoBackUp.data[0]?.hwi?.prs?.[0]?.mw;
+    const backupSound = rawWordInfoBackUp.data[0]?.hwi?.prs?.[0]?.sound?.audio;
+    const backupQuote = rawWordInfoBackUp.data[0]?.quotes || [];
 
-  return { word, definition, audio, example, pronunciation, backupDef, backupPronunciation, backupSound, backupQuote };
+    finalDef.push(...backupDef);
+    finalExample.push(...backupQuote);
+    finalAudio.push(...backupSound);
+    finalPronunciation.push(...backupPronunciation);
+
+    // // Filtrar elementos falsy en todos los arrays
+    // finalDef = finalDef.filter(Boolean).slice(0, 4);
+    // finalExample = finalExample.filter(Boolean).slice(0, 4);
+    // finalAudio = finalAudio.filter(Boolean).slice(0, 4);
+    // finalPronunciation = finalPronunciation.filter(Boolean).slice(0, 4);
+  } catch (error) {
+    console.error("Error occurred while fetching data:", error);
+  }
+
+  const wordInfo = {
+    word,
+    finalDef,
+    finalExample,
+    finalAudio,
+    finalPronunciation
+  };
+
+  return wordInfo;
 };
-
-

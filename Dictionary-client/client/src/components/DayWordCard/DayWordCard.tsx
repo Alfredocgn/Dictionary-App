@@ -1,6 +1,7 @@
 import {Grid,Container,List, Button } from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
+import { useState } from "react";
 // import { useEffect, useState } from 'react';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 // import cron from 'node-cron'
@@ -13,12 +14,20 @@ type Definition = {
 type Example ={
     text:string
 }
+type Pronunciation = {
+    pronunciation:string[];
+}
+type Audio ={
+    audio:string[];
+}
 
 export type WordOfTheDay = {
     word:string;
     phonetics:string;
     definitions:Definition[];
     examples: Example[];
+    pronunciation: Pronunciation[];
+    audio:Audio[];
 }
 
 // type AditionalInfo = {
@@ -33,6 +42,19 @@ type DayPropsCard  ={
 }
 
 export default function DayWordCard({wordOfTheDay, setNewWord} : DayPropsCard) {
+    const [,setIsPlayingAudio] = useState(false)
+
+    const playAudio = () => {
+        if (wordOfTheDay?.audio) {
+            const audio = new Audio(wordOfTheDay.audio[0]);
+            audio.play();
+            setIsPlayingAudio(true);
+            setTimeout(() => {
+                audio.pause();
+                setIsPlayingAudio(false);
+            }, 3000);
+            }
+        };
 
 // const def = wordOfTheDay?.definitions
 // const words = def?.map(d => ({
@@ -63,12 +85,12 @@ return (
                 <Grid container justifyContent="space-between" alignItems="center">
                 <Grid item>
                 <Typography sx={{ color: "secondary.main" }}>
-                    hola
+                    {wordOfTheDay.pronunciation}
                 </Typography>
                 </Grid>
                 <Grid item>
                 <Button>
-                    <PlayCircleOutlineIcon  fontSize='large'/>
+                    <PlayCircleOutlineIcon onClick={playAudio}  fontSize='large'/>
                 </Button>
                 </Grid>
             </Grid>
