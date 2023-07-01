@@ -50,12 +50,12 @@ export default function SearchCard({
               variant="h5"
               sx={{ marginBottom: "0.25rem", fontWeight: "bold" }}
             >
-              {wordInfo.word.toUpperCase()}
+              {wordInfo?.word.toUpperCase()}
             </Typography>
             <Grid container justifyContent="space-between" alignItems="center">
               <Grid item>
                 <Typography sx={{ color: "secondary.main" }}>
-                  {wordInfo.pronunciation[0]}
+                  {wordInfo.pronunciation}
                 </Typography>
               </Grid>
               <Grid item>
@@ -70,8 +70,8 @@ export default function SearchCard({
             <>
               <Typography sx={{ fontWeight: "bold" }}>Meaning</Typography>
               <List>
-                {wordInfo.definition.length > 0 ? 
-                wordInfo.definition.map((el, index) => {
+                { 
+                wordInfo.definition?.map((el, index) => {
                   return (
                     <ul
                       key={index}
@@ -84,9 +84,10 @@ export default function SearchCard({
                       //     wordBreak: "break-word"
                       //   },
                       // }}
+  
                     >
                       <li>
-                      {el.split(" ").map((word, index) => {
+                      {el?.split(" ").map((word, index) => {
                         if (word.length <= 2) {
                           return <p style={{marginRight: '0.25rem',display:'inline-block'}} key={index}>{`  ${word}`}</p>;
                         } else {
@@ -110,15 +111,8 @@ export default function SearchCard({
                       </li>
                     </ul>
                   );
-                }): 
-                    <ul>
-                    <li>{<p     
-                    onClick={(event: MouseEvent<HTMLSpanElement>) => {
-                    const target = event.target as HTMLSpanElement
-                    setNewWord(target.innerHTML.replace(/[^\w\s]/g, ' '));
-                              }} 
-                    >`${wordInfo.backupDefinition}`</p>}</li>
-                  </ul>
+                })
+
                 }
               </List>
             </>
@@ -126,7 +120,7 @@ export default function SearchCard({
             <>
               <Typography sx={{ fontWeight: "bold" }}>Examples</Typography>
               <p>
-                {wordInfo.example.length > 0 ? 
+                {
                 wordInfo.example.map((el, index) => {
                   return (
                   <ul
@@ -165,15 +159,7 @@ export default function SearchCard({
                   </ul>
 
                   )
-                }):
-                <ul>
-                <li>{<p     
-                onClick={(event: MouseEvent<HTMLSpanElement>) => {
-                const target = event.target as HTMLSpanElement
-                setNewWord(target.innerHTML.replace(/[^\w\s]/g, ' '));
-                          }} 
-                >`${wordInfo.backupQuote}`</p>}</li>
-              </ul>
+                })
                 }
               </p>
             </>
